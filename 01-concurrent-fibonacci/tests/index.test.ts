@@ -21,8 +21,17 @@ describe("concurrentMemoFibonacci", () => {
   // });
 
   it("returns the correct fibonacci calculation when testing without concurrency", async () => {
-
     const result = await concurrentMemoFibonacci(10);
     expect(result).toBe(55)
+  })
+
+  it("returns 0 when n == 0", async () => {
+    const result = await concurrentMemoFibonacci(0);
+    expect(result).toBe(0)
+  })
+
+  it("returns 1 when n == 1", async () => {
+    const result = await concurrentMemoFibonacci(1);
+    expect(result).toBe(1)
   })
 });
