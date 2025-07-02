@@ -1,10 +1,20 @@
+const cache = new Map<number, Promise<number>>();
+
 export async function concurrentMemoFibonacci(n: number): Promise<number> {
-  // TODO: implement a memoized and concurrency-safe Fibonacci function
-  
-  const cached = cache.get(n)
+  // Check to see if there is already a cached promise
+  const cached = cache.get(n);
   if (cached !== undefined) {
-    return Promise.resolve(cached)
+    return cached; // Return the existing promise if it exists
   }
+  const promise = calculateFibonacci(n);
+  cache.set(n, promise);
+
+  return promise
+
+}
+
+export async function calculateFibonacci(n: number): Promise<number> {
+  setTimeout(() => { console.log('calculating...'); }, 1000);
 
   let result: number;
 
@@ -16,10 +26,7 @@ export async function concurrentMemoFibonacci(n: number): Promise<number> {
     const [r1, r2] = await Promise.all([concurrentMemoFibonacci(n - 1), concurrentMemoFibonacci(n - 2)]);
     result = r1 + r2
   }
-  
-  setTimeout(() => { console.log('calculating...'); }, 1000);
-  cache.set(n, result)
+
   return Promise.resolve(result)
 }
 
-const cache = new Map<number, number>();
