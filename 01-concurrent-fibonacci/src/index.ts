@@ -13,7 +13,7 @@ export async function concurrentMemoFibonacci(n: number): Promise<number> {
   return promise;
 }
 
-export async function calculateFibonacci(n: number): Promise<number> {
+async function calculateFibonacci(n: number): Promise<number> {
   setTimeout(() => { console.log('expensive calculation...'); }, 1000);
 
   let result: number;
