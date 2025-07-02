@@ -7,14 +7,14 @@ export async function concurrentMemoFibonacci(n: number): Promise<number> {
     return cached; // Return the existing promise if it exists
   }
   const promise = calculateFibonacci(n);
+  //Cache the promise right after it is initiated
   cache.set(n, promise);
 
-  return promise
-
+  return promise;
 }
 
 export async function calculateFibonacci(n: number): Promise<number> {
-  setTimeout(() => { console.log('calculating...'); }, 1000);
+  setTimeout(() => { console.log('expensive calculation...'); }, 1000);
 
   let result: number;
 
