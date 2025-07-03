@@ -14,10 +14,10 @@ export default function Home() {
 
         <div className="flex flex-col items-center space-y-4">
           <Link
-            href="/users"
+            href="/leads"
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           >
-            Go to Users Page
+            Go to Leads Page
           </Link>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">

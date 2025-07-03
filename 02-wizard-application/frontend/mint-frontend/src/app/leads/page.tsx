@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { apiService } from '@/services/api';
 
 interface Lead {
@@ -9,8 +9,7 @@ interface Lead {
   phone: string;
 }
 
-export default function UsersPage() {
-  const [loading, setLoading] = useState(true);
+export default function LeadsPage() {
   const [error, setError] = useState<string | null>(null);
   const [newLead, setNewLead] = useState({ address: '', phone: '' });
 
@@ -20,22 +19,14 @@ export default function UsersPage() {
       await apiService.post('/api/leads', newLead);
       setNewLead({ address: '', phone: '' });
     } catch (err) {
-      setError('Failed to create user');
-      console.error('Error creating user:', err);
+      setError('Failed to create lead');
+      console.error('Error creating lead:', err);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="container mx-auto p-4">
-        <div className="text-center">Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">Users Management</h1>
+      <h1 className="text-3xl font-bold mb-6">Leads Management</h1>
       
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -45,7 +36,7 @@ export default function UsersPage() {
 
       {/* Create Lead Form */}
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 className="text-xl font-semibold mb-4">Add New User</h2>
+        <h2 className="text-xl font-semibold mb-4">Add New Lead</h2>
         <form onSubmit={handleCreateLead} className="space-y-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
