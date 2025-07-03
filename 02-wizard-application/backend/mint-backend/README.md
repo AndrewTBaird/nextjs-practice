@@ -29,9 +29,11 @@
 
 For Interviewers:
 ```bash
+$ cd backend/mint-backend
 $ npm install
-
+$ npm run start
 ```
+Server should be running at localhost:3000
 
 ```bash
 $ npm install
