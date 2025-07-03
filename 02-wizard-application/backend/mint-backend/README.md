@@ -56,9 +56,15 @@ $ mau deploy
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-## Support
+## Entities
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Lead
+tracking_id
+address
+hvac_unit_count
+phone_number
+
+
 
 ## License
 
