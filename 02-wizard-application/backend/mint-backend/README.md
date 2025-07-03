@@ -10,6 +10,8 @@ For Interviewers:
 $ cd backend/mint-backend
 $ npm install
 $ npm run start
+$ cd ../../frontend/mint-frontend
+$ npm run dev
 ```
 Server should be running at localhost:3000
 
