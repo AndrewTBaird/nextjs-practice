@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { apiService } from '@/services/api';
+import { useRouter } from 'next/navigation';
 
 interface Lead {
   id: number;
@@ -9,15 +10,17 @@ interface Lead {
   phone: string;
 }
 
-export default function LeadsPage() {
+export default function QuotePage() {
   const [error, setError] = useState<string | null>(null);
   const [newLead, setNewLead] = useState({ address: '', phone: '' });
+  const router = useRouter();
 
   const handleCreateLead = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await apiService.post('/api/leads', newLead);
       setNewLead({ address: '', phone: '' });
+      router.push('/unit')
     } catch (err) {
       setError('Failed to create lead');
       console.error('Error creating lead:', err);
