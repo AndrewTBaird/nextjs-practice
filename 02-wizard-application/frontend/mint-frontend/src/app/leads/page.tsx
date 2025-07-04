@@ -40,7 +40,7 @@ export default function LeadsPage() {
         <form onSubmit={handleCreateLead} className="space-y-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Name
+              Address
             </label>
             <input
               type="text"
@@ -52,10 +52,11 @@ export default function LeadsPage() {
           </div>
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email
+              Phone Number
             </label>
             <input
-              type="email"
+              type="tel"
+              placeholder="xxx-xxx-xxxx"
               value={newLead.phone}
               onChange={(e) => setNewLead({ ...newLead, phone: e.target.value })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
