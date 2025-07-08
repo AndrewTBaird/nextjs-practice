@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { WizardStep, WizardData, NextStepRequestDto, NextStepResponseDto, SaveProgressRequestDto, SaveProgressResponseDto, SubmitWizardRequestDto, SubmitWizardResponseDto } from './dto/wizard.dto';
+import { WizardSession } from './entities/wizard-session.entity';
+import { QuoteRequest } from './entities/quote-request.entity';
 
 @Injectable()
 export class WizardService {
-  private wizardSessions: Map<string, { currentStep: WizardStep; formData: WizardData }> = new Map();
+  constructor(
+    @InjectRepository(WizardSession)
+    private wizardSessionRepository: Repository<WizardSession>,
+    @InjectRepository(QuoteRequest)
+    private quoteRequestRepository: Repository<QuoteRequest>,
+  ) {}
 
-  determineNextStep(request: NextStepRequestDto): NextStepResponseDto {
+  async determineNextStep(request: NextStepRequestDto): Promise<NextStepResponseDto> {
     const { sessionId, currentStep, formData } = request;
     
-    // Save current progress
-    this.wizardSessions.set(sessionId, { currentStep, formData });
+    // Save current progress to database
+    await this.saveSessionToDatabase(sessionId, currentStep, formData);
     
     const nextStep = this.getNextStep(currentStep, formData);
     
@@ -47,10 +56,10 @@ export class WizardService {
     }
   }
 
-  saveProgress(request: SaveProgressRequestDto): SaveProgressResponseDto {
+  async saveProgress(request: SaveProgressRequestDto): Promise<SaveProgressResponseDto> {
     const { sessionId, currentStep, formData } = request;
     
-    this.wizardSessions.set(sessionId, { currentStep, formData });
+    await this.saveSessionToDatabase(sessionId, currentStep, formData);
     
     return {
       success: true,
@@ -58,15 +67,32 @@ export class WizardService {
     };
   }
 
-  submitWizard(request: SubmitWizardRequestDto): SubmitWizardResponseDto {
+  async submitWizard(request: SubmitWizardRequestDto): Promise<SubmitWizardResponseDto> {
     const { sessionId, formData } = request;
     
-    // TODO: Save to database and create quote request
-    // For now, just generate a quote request ID
+    // Generate a quote request ID
     const quoteRequestId = `quote_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
     
+    // Save quote request to database
+    const quoteRequest = this.quoteRequestRepository.create({
+      quoteRequestId,
+      sessionId,
+      street: formData.address.street,
+      city: formData.address.city,
+      state: formData.address.state,
+      zipCode: formData.address.zipCode,
+      units: formData.units,
+      systemType: formData.systemType,
+      heatingType: formData.heatingType,
+      name: formData.contactInfo.name,
+      phone: formData.contactInfo.phone,
+      email: formData.contactInfo.email,
+    });
+    
+    await this.quoteRequestRepository.save(quoteRequest);
+    
     // Clear session after submission
-    this.wizardSessions.delete(sessionId);
+    await this.wizardSessionRepository.delete({ sessionId });
     
     return {
       success: true,
@@ -74,7 +100,37 @@ export class WizardService {
     };
   }
 
-  getSession(sessionId: string): { currentStep: WizardStep; formData: WizardData } | undefined {
-    return this.wizardSessions.get(sessionId);
+  async getSession(sessionId: string): Promise<{ currentStep: WizardStep; formData: WizardData } | undefined> {
+    const session = await this.wizardSessionRepository.findOne({
+      where: { sessionId }
+    });
+    
+    if (!session) {
+      return undefined;
+    }
+    
+    return {
+      currentStep: session.currentStep,
+      formData: JSON.parse(session.formData)
+    };
+  }
+
+  private async saveSessionToDatabase(sessionId: string, currentStep: WizardStep, formData: WizardData): Promise<void> {
+    const existingSession = await this.wizardSessionRepository.findOne({
+      where: { sessionId }
+    });
+
+    if (existingSession) {
+      existingSession.currentStep = currentStep;
+      existingSession.formData = JSON.stringify(formData);
+      await this.wizardSessionRepository.save(existingSession);
+    } else {
+      const newSession = this.wizardSessionRepository.create({
+        sessionId,
+        currentStep,
+        formData: JSON.stringify(formData)
+      });
+      await this.wizardSessionRepository.save(newSession);
+    }
   }
 }
