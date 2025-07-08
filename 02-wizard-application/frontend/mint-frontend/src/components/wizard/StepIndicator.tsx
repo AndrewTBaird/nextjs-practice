@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useWizard } from '@/contexts/WizardContext';
+import { useWizard } from '@/contexts/WizardContext'
 import { WizardStep } from '@/types/wizard';
 
 const STEP_CONFIG = [

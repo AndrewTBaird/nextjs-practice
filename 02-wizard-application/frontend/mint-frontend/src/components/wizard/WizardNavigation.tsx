@@ -32,7 +32,7 @@ export const WizardNavigation: React.FC = () => {
     switch (currentStep) {
       case 'confirmation':
         return 'Submit Quote Request';
-      case 'contact':
+      case 'contact-only':
         return 'Complete Request';
       default:
         return 'Next';

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useWizard } from '@/contexts/WizardContext';
+import { useWizard } from '@/contexts/WizardContext'
 
 type HeatingTypeOption = 'heat-pump' | 'gas' | 'dont-know';
 
@@ -58,7 +58,7 @@ export const HeatingTypeStep: React.FC = () => {
 
   useEffect(() => {
     updateFormData('heatingType', selectedType);
-  }, [selectedType, updateFormData]);
+  }, [selectedType]);
 
   const handleSelection = (value: HeatingTypeOption) => {
     setSelectedType(value);

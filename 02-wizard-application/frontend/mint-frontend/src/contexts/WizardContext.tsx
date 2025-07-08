@@ -1,4 +1,3 @@
-// src/contexts/WizardContext.tsx
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
@@ -63,41 +62,41 @@ const wizardReducer = (state: WizardState, action: WizardAction): WizardState =>
   }
 };
 
-const WizardContext = createContext<WizardContextType | undefined>(undefined);
+const WizardContext = createContext<WizardContextType>({} as WizardContextType);
 
-// Step configuration
+// Step configuration - updated to match your routing structure
 const STEP_ORDER: WizardStep[] = [
   'address',
-  'units', 
+  'ac-units',     // Changed from 'units' to match routing
   'system-type',
   'heating-type',
   'contact-info',
-  'contact',
+  'contact-only', // Added contact-only step
   'confirmation'
 ];
 
 const getNextStep = (currentStep: WizardStep, formData: WizardData): WizardStep => {
   switch (currentStep) {
     case 'address':
-      return 'units';
-    case 'units':
+      return 'ac-units';
+    case 'ac-units':
       if (formData.units === 'more-than-3' || formData.units === 'dont-know') {
-        return 'contact';
+        return 'contact-only';
       }
       return 'system-type';
     case 'system-type':
       if (formData.systemType === 'dont-know') {
-        return 'contact';
+        return 'contact-only';
       }
       return 'heating-type';
     case 'heating-type':
       if (formData.heatingType === 'dont-know') {
-        return 'contact';
+        return 'contact-only';
       }
       return 'contact-info';
     case 'contact-info':
       return 'confirmation';
-    case 'contact':
+    case 'contact-only':
       return 'confirmation';
     default:
       return 'address';
@@ -106,18 +105,16 @@ const getNextStep = (currentStep: WizardStep, formData: WizardData): WizardStep 
 
 const getPreviousStep = (currentStep: WizardStep, formData: WizardData): WizardStep => {
   switch (currentStep) {
-    case 'units':
+    case 'ac-units':
       return 'address';
     case 'system-type':
-      return 'units';
+      return 'ac-units';
     case 'heating-type':
       return 'system-type';
-    case 'contact-info':
-      return 'heating-type';
-    case 'contact':
+    case 'contact-only':
       // Dynamic previous step based on where they came from
       if (formData.units === 'more-than-3' || formData.units === 'dont-know') {
-        return 'units';
+        return 'ac-units';
       }
       if (formData.systemType === 'dont-know') {
         return 'system-type';
@@ -125,12 +122,12 @@ const getPreviousStep = (currentStep: WizardStep, formData: WizardData): WizardS
       if (formData.heatingType === 'dont-know') {
         return 'heating-type';
       }
-      return 'units';
+      return 'ac-units';
     case 'confirmation':
       // Check the last step they were on
       if (formData.units === 'more-than-3' || formData.units === 'dont-know' || 
           formData.systemType === 'dont-know' || formData.heatingType === 'dont-know') {
-        return 'contact';
+        return 'contact-only';
       }
       return 'contact-info';
     default:
@@ -138,12 +135,17 @@ const getPreviousStep = (currentStep: WizardStep, formData: WizardData): WizardS
   }
 };
 
+// Helper function to check if we're on the client side
+const isClient = typeof window !== 'undefined';
+
 export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(wizardReducer, initialState);
   const router = useRouter();
 
-  // Initialize session on mount
+  // Initialize session on mount (client-side only)
   useEffect(() => {
+    if (!isClient) return;
+
     const sessionId = localStorage.getItem('wizardSessionId') || generateSessionId();
     localStorage.setItem('wizardSessionId', sessionId);
     dispatch({ type: 'SET_SESSION_ID', payload: sessionId });
@@ -160,15 +162,15 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, []);
 
-  // Save state to localStorage whenever it changes
+  // Save state to localStorage whenever it changes (client-side only)
   useEffect(() => {
-    if (state.sessionId) {
-      localStorage.setItem(`wizardState_${state.sessionId}`, JSON.stringify(state));
-    }
+    if (!isClient || !state.sessionId) return;
+
+    localStorage.setItem(`wizardState_${state.sessionId}`, JSON.stringify(state));
   }, [state]);
 
   const generateSessionId = (): string => {
-    return 'wizard_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    return 'wizard_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
   };
 
   const updateFormData = (step: keyof WizardData, data: any) => {
@@ -209,14 +211,14 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       case 'address':
         const { street, city, state: addressState, zipCode } = state.formData.address;
         return street.trim() !== '' && city.trim() !== '' && addressState.trim() !== '' && zipCode.trim() !== '';
-      case 'units':
+      case 'ac-units':
         return state.formData.units !== '';
       case 'system-type':
         return state.formData.systemType !== '';
       case 'heating-type':
         return state.formData.heatingType !== '';
       case 'contact-info':
-      case 'contact':
+      case 'contact-only':
         const { name, phone, email } = state.formData.contactInfo;
         return name.trim() !== '' && phone.trim() !== '' && email.trim() !== '';
       default:
@@ -274,8 +276,10 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       }
       
       // Clear local storage after successful submission
-      localStorage.removeItem(`wizardState_${state.sessionId}`);
-      localStorage.removeItem('wizardSessionId');
+      if (isClient) {
+        localStorage.removeItem(`wizardState_${state.sessionId}`);
+        localStorage.removeItem('wizardSessionId');
+      }
     } catch (error) {
       console.error('Error submitting wizard:', error);
       throw error;
@@ -284,8 +288,12 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  const value: WizardContextType = {
-    ...state,
+  const contextValue: WizardContextType = {
+    sessionId: state.sessionId,
+    currentStep: state.currentStep,
+    formData: state.formData,
+    completedSteps: state.completedSteps,
+    isLoading: state.isLoading,
     updateFormData,
     goToStep,
     goNext,
@@ -297,13 +305,10 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     submitWizard,
   };
 
-  return <WizardContext.Provider value={value}>{children}</WizardContext.Provider>;
+  return <WizardContext.Provider value={contextValue}>{children}</WizardContext.Provider>;
 };
 
 export const useWizard = (): WizardContextType => {
   const context = useContext(WizardContext);
-  if (!context) {
-    throw new Error('useWizard must be used within a WizardProvider');
-  }
   return context;
 };

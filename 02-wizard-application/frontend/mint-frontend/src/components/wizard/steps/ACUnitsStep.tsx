@@ -28,13 +28,13 @@ const UNIT_OPTIONS: { value: UnitOption; label: string; description: string }[] 
   }
 ];
 
-export const UnitsStep: React.FC = () => {
+export const ACUnitsStep: React.FC = () => {
   const { formData, updateFormData } = useWizard();
   const [selectedUnits, setSelectedUnits] = useState<UnitOption | ''>(formData.units);
 
   useEffect(() => {
     updateFormData('units', selectedUnits);
-  }, [selectedUnits, updateFormData]);
+  }, [selectedUnits]);
 
   const handleSelection = (value: UnitOption) => {
     setSelectedUnits(value);

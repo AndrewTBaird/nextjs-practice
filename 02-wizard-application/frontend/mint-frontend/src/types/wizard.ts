@@ -23,11 +23,11 @@ export interface WizardData {
 
 export type WizardStep = 
   | 'address' 
-  | 'units' 
+  | 'ac-units' 
   | 'system-type' 
   | 'heating-type' 
   | 'contact-info' 
-  | 'contact' 
+  | 'contact-only' 
   | 'confirmation';
 
 export interface WizardState {

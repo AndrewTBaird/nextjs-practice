@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useWizard } from '@/contexts/WizardContext';
+import { useWizard } from '@/contexts/WizardContext'
 import { AddressData } from '@/types/wizard';
 
 export const AddressStep: React.FC = () => {
@@ -11,7 +11,7 @@ export const AddressStep: React.FC = () => {
 
   useEffect(() => {
     updateFormData('address', address);
-  }, [address, updateFormData]);
+  }, [address]);
 
   const validateField = (field: keyof AddressData, value: string) => {
     const newErrors = { ...errors };

@@ -48,7 +48,7 @@ export const SystemTypeStep: React.FC = () => {
 
   useEffect(() => {
     updateFormData('systemType', selectedType);
-  }, [selectedType, updateFormData]);
+  }, [selectedType]);
 
   const handleSelection = (value: SystemTypeOption) => {
     setSelectedType(value);
