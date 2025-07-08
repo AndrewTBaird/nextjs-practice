@@ -182,18 +182,43 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     router.push(`/wizard/${step}`);
   };
 
-  const goNext = () => {
-    const nextStep = getNextStep(state.currentStep, state.formData);
-    
-    // Add current step to completed steps
-    if (!state.completedSteps.includes(state.currentStep)) {
-      dispatch({ 
-        type: 'SET_COMPLETED_STEPS', 
-        payload: [...state.completedSteps, state.currentStep] 
+  const goNext = async () => {
+    dispatch({ type: 'SET_LOADING', payload: true });
+    try {
+      // Call backend API to determine next step
+      const response = await fetch('http://localhost:3000/api/wizard/next-step', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: state.sessionId,
+          currentStep: state.currentStep,
+          formData: state.formData,
+        }),
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to get next step');
+      }
+      
+      const result = await response.json();
+      const nextStep = result.nextStep;
+      
+      // Add current step to completed steps
+      if (!state.completedSteps.includes(state.currentStep)) {
+        dispatch({ 
+          type: 'SET_COMPLETED_STEPS', 
+          payload: [...state.completedSteps, state.currentStep] 
+        });
+      }
+      
+      goToStep(nextStep);
+    } catch (error) {
+      console.error('Error getting next step:', error);
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false });
     }
-    
-    goToStep(nextStep);
   };
 
   const goBack = () => {
@@ -233,8 +258,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const saveProgress = async (): Promise<void> => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      // TODO: Implement API call to save progress
-      const response = await fetch('/api/wizard/save', {
+      const response = await fetch('http://localhost:3000/api/wizard/save', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -259,8 +283,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const submitWizard = async (): Promise<void> => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      // TODO: Implement API call to submit final data
-      const response = await fetch('/api/wizard/submit', {
+      const response = await fetch('http://localhost:3000/api/wizard/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

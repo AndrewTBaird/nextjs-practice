@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useWizard } from '@/contexts/WizardContext';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 type SystemTypeOption = 'split' | 'package' | 'dont-know';
 

@@ -11,9 +11,9 @@ import { AddressStep } from '@/components/wizard/steps/AddressStep';
 import { ACUnitsStep } from '@/components/wizard/steps/ACUnitsStep';
 import { SystemTypeStep } from '@/components/wizard/steps/SystemTypeStep';
 import { HeatingTypeStep } from '@/components/wizard/steps/HeatingTypeStep';
-// import { ContactStep } from '@/components/wizard/steps/ContactStep';
-// import { ContactOnlyStep } from '@/components/wizard/steps/ContactOnlyStep';
-// import { ConfirmationStep } from '@/components/wizard/steps/ConfirmationStep';
+import { ContactInfoStep } from '@/components/wizard/steps/ContactInfoStep';
+import { ContactOnlyStep } from '@/components/wizard/steps/ContactOnlyStep';
+import { ConfirmationStep } from '@/components/wizard/steps/ConfirmationStep';
 
 // Define step configuration with components and metadata
 const STEP_CONFIG = {
@@ -37,21 +37,21 @@ const STEP_CONFIG = {
     title: 'Heating Type',
     subtitle: 'What type of heating system do you prefer?'
   },
-//   'contact': {
-//     component: ContactStep,
-//     title: 'Contact Information',
-//     subtitle: 'How can we reach you with your quote?'
-//   },
-//   'contact-only': {
-//     component: ContactOnlyStep,
-//     title: 'Contact Information',
-//     subtitle: 'We\'ll need to discuss your specific needs'
-//   },
-//   'confirmation': {
-//     component: ConfirmationStep,
-//     title: 'Quote Request Submitted',
-//     subtitle: 'Thank you for your submission!'
-//   }
+  'contact-info': {
+    component: ContactInfoStep,
+    title: 'Contact Information',
+    subtitle: 'How can we reach you with your quote?'
+  },
+  'contact-only': {
+    component: ContactOnlyStep,
+    title: 'Contact Information',
+    subtitle: 'We\'ll need to discuss your specific needs'
+  },
+  'confirmation': {
+    component: ConfirmationStep,
+    title: 'Quote Request Submitted',
+    subtitle: 'Thank you for your submission!'
+  }
 } as const;
 
 export default function WizardStepPage() {
