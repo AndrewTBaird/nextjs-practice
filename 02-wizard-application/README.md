@@ -109,12 +109,14 @@ You can either share the repository URL or provide a ZIP file with your solution
 
 
 ## Running the project
+Run the backend in one terminal. This will run on port 3000
+```console
+(cd backend && npm install && npm run build && npm start)
+```
 
-backend
-npm run build
-npm start
+run the frontend in a separate terminal, this will run on port 3001
+```console
+(cd frontend && npm install && npm run build && npm run dev)
+```
 
-
-frontend
-npm run build
-npm run dev
+Navigate to localhost:3001 and press Start to begin!
