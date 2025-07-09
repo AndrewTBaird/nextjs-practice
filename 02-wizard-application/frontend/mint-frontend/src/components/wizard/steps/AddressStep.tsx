@@ -17,6 +17,11 @@ export const AddressStep: React.FC = () => {
     updateFormData('address', address);
   }, [address]);
 
+  // Sync local state when formData changes (e.g., when going back)
+  useEffect(() => {
+    setAddress(formData.address);
+  }, [formData.address]);
+
   const validateField = (field: keyof AddressData, value: string) => {
     const newErrors = { ...errors };
     

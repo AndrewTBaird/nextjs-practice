@@ -39,6 +39,11 @@ export const ACUnitsStep: React.FC = () => {
     updateFormData('units', selectedUnits);
   }, [selectedUnits]);
 
+  // Sync local state when formData changes (e.g., when going back)
+  useEffect(() => {
+    setSelectedUnits(formData.units);
+  }, [formData.units]);
+
   const handleSelection = (value: UnitOption) => {
     setSelectedUnits(value);
   };

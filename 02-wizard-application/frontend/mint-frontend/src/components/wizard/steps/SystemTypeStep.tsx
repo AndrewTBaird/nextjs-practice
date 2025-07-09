@@ -53,6 +53,11 @@ export const SystemTypeStep: React.FC = () => {
     updateFormData('systemType', selectedType);
   }, [selectedType]);
 
+  // Sync local state when formData changes (e.g., when going back)
+  useEffect(() => {
+    setSelectedType(formData.systemType);
+  }, [formData.systemType]);
+
   const handleSelection = (value: SystemTypeOption) => {
     setSelectedType(value);
   };

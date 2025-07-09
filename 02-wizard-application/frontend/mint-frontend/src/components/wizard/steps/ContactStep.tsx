@@ -21,7 +21,12 @@ export const ContactStep: React.FC = () => {
 
   useEffect(() => {
     updateFormData('contactInfo', contactInfo);
-  }, [contactInfo, updateFormData]);
+  }, [contactInfo]);
+
+  // Sync local state when formData changes (e.g., when going back)
+  useEffect(() => {
+    setContactInfo(formData.contactInfo);
+  }, [formData.contactInfo]);
 
   const validateField = (field: keyof ContactData, value: string) => {
     const newErrors = { ...errors };

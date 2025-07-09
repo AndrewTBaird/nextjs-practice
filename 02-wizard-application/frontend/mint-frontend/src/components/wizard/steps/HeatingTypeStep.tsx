@@ -60,6 +60,11 @@ export const HeatingTypeStep: React.FC = () => {
     updateFormData('heatingType', selectedType);
   }, [selectedType]);
 
+  // Sync local state when formData changes (e.g., when going back)
+  useEffect(() => {
+    setSelectedType(formData.heatingType);
+  }, [formData.heatingType]);
+
   const handleSelection = (value: HeatingTypeOption) => {
     setSelectedType(value);
   };
