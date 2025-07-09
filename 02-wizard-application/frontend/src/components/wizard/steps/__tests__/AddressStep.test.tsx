@@ -1,7 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AddressStep } from '../AddressStep'
-import { WizardProvider, useWizard } from '@/contexts/WizardContext'
 
 // Mock the wizard context
 const mockWizard = {
@@ -80,7 +79,7 @@ describe('AddressStep', () => {
 
     expect(screen.getByDisplayValue('123 Main St')).toBeInTheDocument()
     expect(screen.getByDisplayValue('Austin')).toBeInTheDocument()
-    expect(screen.getByDisplayValue('TX')).toBeInTheDocument()
+    expect(screen.getByText('Texas')).toBeInTheDocument()
     expect(screen.getByDisplayValue('78701')).toBeInTheDocument()
   })
 

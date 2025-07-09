@@ -119,7 +119,7 @@ export const AddressStep: React.FC = () => {
                 value={address.state}
                 onValueChange={(value) => handleInputChange('state', value)}
               >
-                <SelectTrigger className={errors.state ? 'border-destructive' : ''}>
+                <SelectTrigger id="state" className={errors.state ? 'border-destructive' : ''}>
                   <SelectValue placeholder="Select State" />
                 </SelectTrigger>
                 <SelectContent>

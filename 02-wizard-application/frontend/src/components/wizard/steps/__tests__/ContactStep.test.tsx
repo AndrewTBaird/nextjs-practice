@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ContactStep } from '../ContactStep'
 
@@ -296,15 +296,15 @@ describe('ContactStep', () => {
     render(<ContactStep />)
 
     // Check for green checkmark icon in regular flow
-    const icons = screen.getAllByRole('img', { hidden: true })
-    expect(icons.length).toBeGreaterThan(0)
+    const svgElements = document.querySelectorAll('svg')
+    expect(svgElements.length).toBeGreaterThan(0)
 
     // Test consultation flow
     mockWizard.currentStep = 'contact-only'
     const { rerender } = render(<ContactStep />)
     rerender(<ContactStep />)
 
-    const consultationIcons = screen.getAllByRole('img', { hidden: true })
-    expect(consultationIcons.length).toBeGreaterThan(0)
+    const consultationSvg = document.querySelectorAll('svg')
+    expect(consultationSvg.length).toBeGreaterThan(0)
   })
 })
