@@ -106,3 +106,14 @@ You can either share the repository URL or provide a ZIP file with your solution
 - Consider using form libraries like ShadCN (https://ui.shadcn.com/)
 - Document your code and provide clear instructions for running your application
 - You are free to use AI tools / AI Agents to assist on your solution
+
+
+## Running the project
+
+backend
+npm run build
+npm start
+
+
+frontend
+npm run build
