@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { WizardStep, WizardData, NextStepRequestDto, NextStepResponseDto, SaveProgressRequestDto, SaveProgressResponseDto, SubmitWizardRequestDto, SubmitWizardResponseDto } from './dto/wizard.dto';
+import { WizardStep, WizardData, NextStepRequestDto, NextStepResponseDto, SubmitWizardRequestDto, SubmitWizardResponseDto } from './dto/wizard.dto';
 import { WizardSession } from './entities/wizard-session.entity';
 import { QuoteRequest } from './entities/quote-request.entity';
 
@@ -56,16 +56,6 @@ export class WizardService {
     }
   }
 
-  async saveProgress(request: SaveProgressRequestDto): Promise<SaveProgressResponseDto> {
-    const { sessionId, currentStep, formData } = request;
-    
-    await this.saveSessionToDatabase(sessionId, currentStep, formData);
-    
-    return {
-      success: true,
-      sessionId
-    };
-  }
 
   async submitWizard(request: SubmitWizardRequestDto): Promise<SubmitWizardResponseDto> {
     const { sessionId, formData } = request;

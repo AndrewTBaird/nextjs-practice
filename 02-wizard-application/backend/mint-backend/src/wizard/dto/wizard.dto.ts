@@ -39,16 +39,6 @@ export class NextStepResponseDto {
   sessionId: string;
 }
 
-export class SaveProgressRequestDto {
-  sessionId: string;
-  currentStep: WizardStep;
-  formData: WizardData;
-}
-
-export class SaveProgressResponseDto {
-  success: boolean;
-  sessionId: string;
-}
 
 export class SubmitWizardRequestDto {
   sessionId: string;
