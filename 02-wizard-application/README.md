@@ -1,5 +1,18 @@
 # Exercise 02 - Multi-Step Wizard Application
 
+## Running the project
+Run the backend in one terminal. This will run on port 3000
+```bash
+(cd backend && npm install && npm run build && npm start)
+```
+
+run the frontend in a separate terminal, this will run on port 3001
+```bash
+(cd frontend && npm install && npm run build && npm run dev)
+```
+
+Navigate to localhost:3001 and press Start to begin!
+
 ## Overview
 
 In this challenge, you will create a simple and lightweight full-stack application that simulates a multi-step quote request wizard for HVAC installations. This is a simplified version of a real-world scenario where our customers request a quote online for our services. YOu can see our current implementation in our website www.minthome.com (At the moment we are only servicing Texas, Nevada and Arizona).
@@ -108,15 +121,3 @@ You can either share the repository URL or provide a ZIP file with your solution
 - You are free to use AI tools / AI Agents to assist on your solution
 
 
-## Running the project
-Run the backend in one terminal. This will run on port 3000
-```console
-(cd backend && npm install && npm run build && npm start)
-```
-
-run the frontend in a separate terminal, this will run on port 3001
-```console
-(cd frontend && npm install && npm run build && npm run dev)
-```
-
-Navigate to localhost:3001 and press Start to begin!
