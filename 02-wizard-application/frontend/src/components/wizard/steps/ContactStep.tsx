@@ -27,7 +27,7 @@ export const ContactStep: React.FC = () => {
     if (formDataStr !== localStr) {
       setContactInfo(formData.contactInfo);
     }
-  }, [formData.contactInfo, contactInfo]);
+  }, [formData.contactInfo]);
 
   // Update form data when local state changes (debounced to avoid excessive updates)
   useEffect(() => {
@@ -36,7 +36,7 @@ export const ContactStep: React.FC = () => {
     }, 100);
     
     return () => clearTimeout(timeoutId);
-  }, [contactInfo, updateFormData]);
+  }, [contactInfo]);
 
   const validateField = (field: keyof ContactData, value: string) => {
     const newErrors = { ...errors };

@@ -117,3 +117,4 @@ npm start
 
 frontend
 npm run build
+npm run dev

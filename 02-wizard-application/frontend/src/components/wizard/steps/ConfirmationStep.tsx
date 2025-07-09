@@ -26,7 +26,7 @@ export const ConfirmationStep: React.FC = () => {
     if (!isSubmitted) {
       handleSubmit();
     }
-  }, [isSubmitted, submitWizard]);
+  }, [isSubmitted]);
 
 
   const getSystemSummary = () => {
