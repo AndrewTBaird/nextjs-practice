@@ -16,7 +16,7 @@ Navigate to localhost:3001 and press Start to begin!
 # Design Decisions
 
 ## Frontend
-See frontend/README.md for all frontend design decisions
+See the [frontend README](frontend/README.md) for all frontend design decisions
 
 ## Backend
-See backend/README.md for all backend design decisions
+See THE [backend README](backend/README.md) for all backend design decisions
