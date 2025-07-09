@@ -70,12 +70,6 @@ export const ConfirmationStep: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {quoteRequestId && (
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-1">Your Quote Request ID</p>
-              <p className="font-mono text-lg font-semibold">{quoteRequestId}</p>
-            </div>
-          )}
 
           {/* Summary */}
           <div className="space-y-4">

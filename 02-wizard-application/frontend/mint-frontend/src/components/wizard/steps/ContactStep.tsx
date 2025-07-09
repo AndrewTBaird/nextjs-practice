@@ -19,14 +19,24 @@ export const ContactStep: React.FC = () => {
     formData.systemType === 'dont-know' || 
     formData.heatingType === 'dont-know';
 
+  // Only sync local state when formData changes (e.g., when going back)
+  // But avoid circular updates by checking if the data is actually different
   useEffect(() => {
-    updateFormData('contactInfo', contactInfo);
-  }, [contactInfo]);
-
-  // Sync local state when formData changes (e.g., when going back)
-  useEffect(() => {
-    setContactInfo(formData.contactInfo);
+    const formDataStr = JSON.stringify(formData.contactInfo);
+    const localStr = JSON.stringify(contactInfo);
+    if (formDataStr !== localStr) {
+      setContactInfo(formData.contactInfo);
+    }
   }, [formData.contactInfo]);
+
+  // Update form data when local state changes (debounced to avoid excessive updates)
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      updateFormData('contactInfo', contactInfo);
+    }, 100);
+    
+    return () => clearTimeout(timeoutId);
+  }, [contactInfo]);
 
   const validateField = (field: keyof ContactData, value: string) => {
     const newErrors = { ...errors };

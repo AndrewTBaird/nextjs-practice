@@ -23,7 +23,9 @@ export const StepIndicator: React.FC = () => {
   const maxSteps = 6; // Typical flow has 6 steps (excluding confirmation as final)
   
   // Calculate progress percentage based on current step position
-  const progressPercentage = currentStepIndex >= 0 ? ((currentStepIndex + 1) / maxSteps) * 100 : 0;
+  // Cap at maxSteps for confirmation page
+  const effectiveStepIndex = Math.min(currentStepIndex + 1, maxSteps);
+  const progressPercentage = currentStepIndex >= 0 ? (effectiveStepIndex / maxSteps) * 100 : 0;
 
   // Get current step display name
   const getStepDisplayName = (step: string) => {
@@ -43,7 +45,7 @@ export const StepIndicator: React.FC = () => {
     <div className="w-full">
       <div className="flex justify-between items-center mb-2">
         <span className="text-sm font-medium text-muted-foreground">
-          Step {Math.max(currentStepIndex + 1, 1)} of {maxSteps}
+          Step {Math.max(effectiveStepIndex, 1)} of {maxSteps}
         </span>
         <span className="text-sm font-medium text-primary">
           {getStepDisplayName(currentStep)}

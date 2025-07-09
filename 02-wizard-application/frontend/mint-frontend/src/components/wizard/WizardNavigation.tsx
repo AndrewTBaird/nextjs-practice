@@ -15,29 +15,22 @@ export const WizardNavigation: React.FC = () => {
   } = useWizard();
 
   const handleNext = async () => {
-    if (currentStep === 'confirmation') {
-      try {
-        await submitWizard();
-        // Handle successful submission (redirect, show success message, etc.)
-      } catch (error) {
-        // Handle error
-        console.error('Failed to submit wizard:', error);
-      }
-    } else {
-      goNext();
-    }
+    goNext();
   };
 
   const getNextButtonText = () => {
     switch (currentStep) {
-      case 'confirmation':
-        return 'Submit Quote Request';
       case 'contact-only':
         return 'Complete Request';
       default:
         return 'Next';
     }
   };
+
+  // Don't show navigation on confirmation page
+  if (currentStep === 'confirmation') {
+    return null;
+  }
 
   return (
     <div className="flex justify-between items-center px-6 py-4 border-t bg-gray-50">
@@ -60,13 +53,7 @@ export const WizardNavigation: React.FC = () => {
         <button
           onClick={handleNext}
           disabled={!canGoNext() || isLoading}
-          className={`
-            flex items-center px-6 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed
-            ${currentStep === 'confirmation' 
-              ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500' 
-              : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
-            }
-          `}
+          className="flex items-center px-6 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
         >
           {isLoading && (
             <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -75,11 +62,9 @@ export const WizardNavigation: React.FC = () => {
             </svg>
           )}
           {getNextButtonText()}
-          {currentStep !== 'confirmation' && (
-            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          )}
+          <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
         </button>
       </div>
     </div>
