@@ -46,6 +46,5 @@ export interface WizardContextType extends WizardState {
   canGoBack: () => boolean;
   canGoNext: () => boolean;
   getStepIndex: (step: WizardStep) => number;
-  saveProgress: () => Promise<void>;
   submitWizard: () => Promise<void>;
 }

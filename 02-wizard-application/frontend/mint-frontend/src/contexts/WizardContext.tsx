@@ -185,7 +185,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const goNext = async () => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
-      // Call backend API to determine next step
+      // Call backend API to determine next step AND save progress automatically
       const response = await fetch('http://localhost:3000/api/wizard/next-step', {
         method: 'POST',
         headers: {
@@ -255,30 +255,6 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return STEP_ORDER.indexOf(step);
   };
 
-  const saveProgress = async (): Promise<void> => {
-    dispatch({ type: 'SET_LOADING', payload: true });
-    try {
-      const response = await fetch('http://localhost:3000/api/wizard/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sessionId: state.sessionId,
-          currentStep: state.currentStep,
-          formData: state.formData,
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to save progress');
-      }
-    } catch (error) {
-      console.error('Error saving progress:', error);
-    } finally {
-      dispatch({ type: 'SET_LOADING', payload: false });
-    }
-  };
 
   const submitWizard = async (): Promise<void> => {
     dispatch({ type: 'SET_LOADING', payload: true });
@@ -324,7 +300,6 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     canGoBack,
     canGoNext,
     getStepIndex,
-    saveProgress,
     submitWizard,
   };
 
