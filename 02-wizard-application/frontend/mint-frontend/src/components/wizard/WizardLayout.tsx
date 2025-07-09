@@ -23,25 +23,14 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">HVAC Quote Request</h1>
-              <p className="text-gray-600">Get your personalized quote in minutes</p>
-            </div>
-            <div className="hidden md:block">
-              <StepIndicator />
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Mobile Step Indicator */}
-      <div className="md:hidden bg-white border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="mb-4">
+            <h1 className="text-2xl font-bold text-gray-900">HVAC Quote Request</h1>
+            <p className="text-gray-600">Get your personalized quote in minutes</p>
+          </div>
           <StepIndicator />
         </div>
-      </div>
+      </header>
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-8">
