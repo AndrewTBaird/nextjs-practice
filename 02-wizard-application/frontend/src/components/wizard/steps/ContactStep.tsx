@@ -87,7 +87,7 @@ export const ContactStep: React.FC = () => {
 
   const getDescription = () => {
     if (isConsultationFlow) {
-      return "We&apos;ll need to discuss your specific HVAC needs with one of our experts. Please provide your contact information and we&apos;ll reach out to you soon.";
+      return "We'll need to discuss your specific HVAC needs with one of our experts. Please provide your contact information and we'll reach out to you soon.";
     }
     return "How can we reach you with your personalized HVAC quote?";
   };
@@ -98,14 +98,14 @@ export const ContactStep: React.FC = () => {
         bgColor: "bg-amber-50 border-amber-200",
         iconColor: "text-amber-400",
         textColor: "text-amber-800",
-        message: "Our HVAC experts will call you within 2 business hours to discuss your specific needs and provide a customized quote. We&apos;re here to help find the perfect solution for your home."
+        message: "Our HVAC experts will call you within 2 business hours to discuss your specific needs and provide a customized quote. We're here to help find the perfect solution for your home."
       };
     }
     return {
       bgColor: "bg-green-50 border-green-200",
       iconColor: "text-green-400",
       textColor: "text-green-800",
-      message: "Your information is secure and will only be used to provide your HVAC quote. We&apos;ll contact you within 24 hours with your personalized estimate."
+      message: "Your information is secure and will only be used to provide your HVAC quote. We'll contact you within 24 hours with your personalized estimate."
     };
   };
 

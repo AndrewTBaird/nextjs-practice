@@ -37,7 +37,7 @@ const SYSTEM_TYPE_OPTIONS: {
     description: 'Not sure about my current system type',
     details: [
       'Our experts can help identify your system',
-      'We&apos;ll provide guidance during consultation'
+      "We'll provide guidance during consultation"
     ]
   }
 ];
@@ -160,14 +160,14 @@ export const SystemTypeStep: React.FC = () => {
       <div className="bg-gray-50 border border-gray-200 rounded-md p-4">
         <h4 className="text-sm font-medium text-gray-900 mb-2">Need help identifying your system?</h4>
         <p className="text-sm text-gray-600 mb-3">
-          Look outside your home. If you see a large unit with a fan on top, that&apos;s likely your outdoor condenser (split system). 
-          If all the equipment is in one outdoor unit, it&apos;s probably a package system.
+          Look outside your home. If you see a large unit with a fan on top, that's likely your outdoor condenser (split system). 
+          If all the equipment is in one outdoor unit, it's probably a package system.
         </p>
         <div className="flex items-center text-sm text-blue-600">
           <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Still not sure? Select &quot;I don&apos;t know&quot; and we&apos;ll help you identify your system.
+          Still not sure? Select "I don't know" and we'll help you identify your system.
         </div>
       </div>
 

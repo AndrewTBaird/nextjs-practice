@@ -59,7 +59,7 @@ describe('ContactStep', () => {
     render(<ContactStep />)
 
     expect(screen.getByText("Let's Get You Connected")).toBeInTheDocument()
-    expect(screen.getByText(/we&apos;ll need to discuss your specific hvac needs/i)).toBeInTheDocument()
+    expect(screen.getByText(/we'll need to discuss your specific hvac needs/i)).toBeInTheDocument()
   })
 
   it('displays consultation title when units is dont-know', () => {
@@ -194,7 +194,7 @@ describe('ContactStep', () => {
     render(<ContactStep />)
 
     expect(screen.getByText(/your information is secure/i)).toBeInTheDocument()
-    expect(screen.getByText(/we&apos;ll contact you within 24 hours/i)).toBeInTheDocument()
+    expect(screen.getByText(/we'll contact you within 24 hours/i)).toBeInTheDocument()
   })
 
   it('displays consultation info message for consultation flow', () => {
@@ -202,7 +202,7 @@ describe('ContactStep', () => {
     render(<ContactStep />)
 
     expect(screen.getByText(/our hvac experts will call you within 2 business hours/i)).toBeInTheDocument()
-    expect(screen.getByText(/we&apos;re here to help find the perfect solution/i)).toBeInTheDocument()
+    expect(screen.getByText(/we're here to help find the perfect solution/i)).toBeInTheDocument()
   })
 
   it('displays existing contact information', () => {
