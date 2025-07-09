@@ -10,8 +10,7 @@ export const WizardNavigation: React.FC = () => {
     canGoNext, 
     goBack, 
     goNext, 
-    isLoading,
-    submitWizard
+    isLoading
   } = useWizard();
 
   const handleNext = async () => {

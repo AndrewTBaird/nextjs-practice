@@ -15,7 +15,7 @@ export const AddressStep: React.FC = () => {
 
   useEffect(() => {
     updateFormData('address', address);
-  }, [address]);
+  }, [address, updateFormData]);
 
   // Sync local state when formData changes (e.g., when going back)
   useEffect(() => {

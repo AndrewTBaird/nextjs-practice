@@ -7,29 +7,27 @@ import { Button } from '@/components/ui/button';
 
 export const ConfirmationStep: React.FC = () => {
   const { formData, submitWizard, isLoading } = useWizard();
-  const [quoteRequestId, setQuoteRequestId] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     // Auto-submit when component mounts
+    const handleSubmit = async () => {
+      if (isSubmitted) return;
+      
+      try {
+        setIsSubmitted(true);
+        await submitWizard();
+      } catch (error) {
+        console.error('Error submitting wizard:', error);
+        setIsSubmitted(false);
+      }
+    };
+
     if (!isSubmitted) {
       handleSubmit();
     }
-  }, []);
+  }, [isSubmitted, submitWizard]);
 
-  const handleSubmit = async () => {
-    if (isSubmitted) return;
-    
-    try {
-      setIsSubmitted(true);
-      await submitWizard();
-      // In a real app, you'd get the quote request ID from the response
-      setQuoteRequestId(`quote_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`);
-    } catch (error) {
-      console.error('Error submitting wizard:', error);
-      setIsSubmitted(false);
-    }
-  };
 
   const getSystemSummary = () => {
     const { units, systemType, heatingType } = formData;
@@ -66,7 +64,7 @@ export const ConfirmationStep: React.FC = () => {
           </div>
           <CardTitle className="text-2xl">Quote Request Submitted!</CardTitle>
           <CardDescription>
-            Thank you for choosing Mint Home for your HVAC needs. We've received your information and will contact you soon.
+            Thank you for choosing Mint Home for your HVAC needs. We&apos;ve received your information and will contact you soon.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

@@ -37,7 +37,7 @@ export const ACUnitsStep: React.FC = () => {
 
   useEffect(() => {
     updateFormData('units', selectedUnits);
-  }, [selectedUnits]);
+  }, [selectedUnits, updateFormData]);
 
   // Sync local state when formData changes (e.g., when going back)
   useEffect(() => {
@@ -114,7 +114,7 @@ export const ACUnitsStep: React.FC = () => {
               </div>
               <div className="ml-3">
                 <p className="text-sm text-amber-800">
-                  For homes with more than 3 AC units, we'll need to discuss your specific needs. Our team will contact you to provide a customized quote.
+                  For homes with more than 3 AC units, we&apos;ll need to discuss your specific needs. Our team will contact you to provide a customized quote.
                 </p>
               </div>
             </div>
@@ -133,7 +133,7 @@ export const ACUnitsStep: React.FC = () => {
               </div>
               <div className="ml-3">
                 <p className="text-sm text-blue-800">
-                  No problem! Our experts can help you determine your current system setup. We'll contact you to discuss your home's cooling needs.
+                  No problem! Our experts can help you determine your current system setup. We&apos;ll contact you to discuss your home&apos;s cooling needs.
                 </p>
               </div>
             </div>

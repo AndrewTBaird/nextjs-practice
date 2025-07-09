@@ -31,7 +31,7 @@ const initialState: WizardState = {
 
 type WizardAction = 
   | { type: 'SET_CURRENT_STEP'; payload: WizardStep }
-  | { type: 'UPDATE_FORM_DATA'; payload: { step: keyof WizardData; data: any } }
+  | { type: 'UPDATE_FORM_DATA'; payload: { step: keyof WizardData; data: unknown } }
   | { type: 'SET_COMPLETED_STEPS'; payload: WizardStep[] }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_SESSION_ID'; payload: string }
@@ -67,41 +67,41 @@ const WizardContext = createContext<WizardContextType>({} as WizardContextType);
 // Step configuration - updated to match your routing structure
 const STEP_ORDER: WizardStep[] = [
   'address',
-  'ac-units',     // Changed from 'units' to match routing
+  'ac-units',
   'system-type',
   'heating-type',
   'contact-info',
-  'contact-only', // Added contact-only step
+  'contact-only',
   'confirmation'
 ];
 
-const getNextStep = (currentStep: WizardStep, formData: WizardData): WizardStep => {
-  switch (currentStep) {
-    case 'address':
-      return 'ac-units';
-    case 'ac-units':
-      if (formData.units === 'more-than-3' || formData.units === 'dont-know') {
-        return 'contact-only';
-      }
-      return 'system-type';
-    case 'system-type':
-      if (formData.systemType === 'dont-know') {
-        return 'contact-only';
-      }
-      return 'heating-type';
-    case 'heating-type':
-      if (formData.heatingType === 'dont-know') {
-        return 'contact-only';
-      }
-      return 'contact-info';
-    case 'contact-info':
-      return 'confirmation';
-    case 'contact-only':
-      return 'confirmation';
-    default:
-      return 'address';
-  }
-};
+// const getNextStep = (currentStep: WizardStep, formData: WizardData): WizardStep => {
+//   switch (currentStep) {
+//     case 'address':
+//       return 'ac-units';
+//     case 'ac-units':
+//       if (formData.units === 'more-than-3' || formData.units === 'dont-know') {
+//         return 'contact-only';
+//       }
+//       return 'system-type';
+//     case 'system-type':
+//       if (formData.systemType === 'dont-know') {
+//         return 'contact-only';
+//       }
+//       return 'heating-type';
+//     case 'heating-type':
+//       if (formData.heatingType === 'dont-know') {
+//         return 'contact-only';
+//       }
+//       return 'contact-info';
+//     case 'contact-info':
+//       return 'confirmation';
+//     case 'contact-only':
+//       return 'confirmation';
+//     default:
+//       return 'address';
+//   }
+// };
 
 const getPreviousStep = (currentStep: WizardStep, formData: WizardData): WizardStep => {
   switch (currentStep) {
@@ -173,7 +173,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return 'wizard_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
   };
 
-  const updateFormData = (step: keyof WizardData, data: any) => {
+  const updateFormData = (step: keyof WizardData, data: unknown) => {
     dispatch({ type: 'UPDATE_FORM_DATA', payload: { step, data } });
   };
 
@@ -202,7 +202,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         throw new Error('Failed to get next step');
       }
       
-      const result = await response.json();
+      const result = await response.json() as { nextStep: WizardStep };
       const nextStep = result.nextStep;
       
       // Add current step to completed steps

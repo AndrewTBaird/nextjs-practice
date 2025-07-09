@@ -39,7 +39,7 @@ export interface WizardState {
 }
 
 export interface WizardContextType extends WizardState {
-  updateFormData: (step: keyof WizardData, data: any) => void;
+  updateFormData: (step: keyof WizardData, data: unknown) => void;
   goToStep: (step: WizardStep) => void;
   goNext: () => void;
   goBack: () => void;

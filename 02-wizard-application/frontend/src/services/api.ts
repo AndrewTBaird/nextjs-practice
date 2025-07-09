@@ -14,13 +14,13 @@ const api = axios.create({
 // API service functions
 export const apiService = {
   // GET request
-  get: async (url: string, params?: any) => {
+  get: async (url: string, params?: unknown) => {
     const response = await api.get(url, { params });
     return response.data;
   },
 
   // POST request
-  post: async (url: string, data?: any) => {
+  post: async (url: string, data?: unknown) => {
     const response = await api.post(url, data);
     return response.data;
   }
