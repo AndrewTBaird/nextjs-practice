@@ -7,10 +7,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export const ContactOnlyStep: React.FC = () => {
-  const { formData, updateFormData } = useWizard();
+export const ContactStep: React.FC = () => {
+  const { formData, updateFormData, currentStep } = useWizard();
   const [contactInfo, setContactInfo] = useState<ContactData>(formData.contactInfo);
   const [errors, setErrors] = useState<Partial<ContactData>>({});
+
+  // Determine if this is the "I don't know" flow
+  const isConsultationFlow = currentStep === 'contact-only' || 
+    formData.units === 'more-than-3' || 
+    formData.units === 'dont-know' || 
+    formData.systemType === 'dont-know' || 
+    formData.heatingType === 'dont-know';
 
   useEffect(() => {
     updateFormData('contactInfo', contactInfo);
@@ -59,14 +66,42 @@ export const ContactOnlyStep: React.FC = () => {
     validateField(field, value);
   };
 
+  const getTitle = () => {
+    return isConsultationFlow ? "Let's Get You Connected" : "Contact Information";
+  };
+
+  const getDescription = () => {
+    if (isConsultationFlow) {
+      return "We'll need to discuss your specific HVAC needs with one of our experts. Please provide your contact information and we'll reach out to you soon.";
+    }
+    return "How can we reach you with your personalized HVAC quote?";
+  };
+
+  const getInfoMessage = () => {
+    if (isConsultationFlow) {
+      return {
+        bgColor: "bg-amber-50 border-amber-200",
+        iconColor: "text-amber-400",
+        textColor: "text-amber-800",
+        message: "Our HVAC experts will call you within 2 business hours to discuss your specific needs and provide a customized quote. We're here to help find the perfect solution for your home."
+      };
+    }
+    return {
+      bgColor: "bg-green-50 border-green-200",
+      iconColor: "text-green-400",
+      textColor: "text-green-800",
+      message: "Your information is secure and will only be used to provide your HVAC quote. We'll contact you within 24 hours with your personalized estimate."
+    };
+  };
+
+  const infoMessage = getInfoMessage();
+
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Let's Get You Connected</CardTitle>
-          <CardDescription>
-            We'll need to discuss your specific HVAC needs with one of our experts. Please provide your contact information and we'll reach out to you soon.
-          </CardDescription>
+          <CardTitle>{getTitle()}</CardTitle>
+          <CardDescription>{getDescription()}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Full Name */}
@@ -123,17 +158,21 @@ export const ContactOnlyStep: React.FC = () => {
       </Card>
 
       {/* Info Box */}
-      <Card className="bg-amber-50 border-amber-200">
+      <Card className={infoMessage.bgColor}>
         <CardContent className="pt-6">
           <div className="flex">
             <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              <svg className={`h-5 w-5 ${infoMessage.iconColor}`} viewBox="0 0 20 20" fill="currentColor">
+                {isConsultationFlow ? (
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                ) : (
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                )}
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-sm text-amber-800">
-                Our HVAC experts will call you within 2 business hours to discuss your specific needs and provide a customized quote. We're here to help find the perfect solution for your home.
+              <p className={`text-sm ${infoMessage.textColor}`}>
+                {infoMessage.message}
               </p>
             </div>
           </div>

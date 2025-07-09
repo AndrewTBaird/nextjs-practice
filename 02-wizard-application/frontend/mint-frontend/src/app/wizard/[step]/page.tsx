@@ -11,8 +11,7 @@ import { AddressStep } from '@/components/wizard/steps/AddressStep';
 import { ACUnitsStep } from '@/components/wizard/steps/ACUnitsStep';
 import { SystemTypeStep } from '@/components/wizard/steps/SystemTypeStep';
 import { HeatingTypeStep } from '@/components/wizard/steps/HeatingTypeStep';
-import { ContactInfoStep } from '@/components/wizard/steps/ContactInfoStep';
-import { ContactOnlyStep } from '@/components/wizard/steps/ContactOnlyStep';
+import { ContactStep } from '@/components/wizard/steps/ContactStep';
 import { ConfirmationStep } from '@/components/wizard/steps/ConfirmationStep';
 
 // Define step configuration with components and metadata
@@ -38,12 +37,12 @@ const STEP_CONFIG = {
     subtitle: 'What type of heating system do you prefer?'
   },
   'contact-info': {
-    component: ContactInfoStep,
+    component: ContactStep,
     title: 'Contact Information',
     subtitle: 'How can we reach you with your quote?'
   },
   'contact-only': {
-    component: ContactOnlyStep,
+    component: ContactStep,
     title: 'Contact Information',
     subtitle: 'We\'ll need to discuss your specific needs'
   },
