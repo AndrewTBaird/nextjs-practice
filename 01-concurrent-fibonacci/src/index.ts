@@ -18,10 +18,13 @@ async function calculateFibonacci(n: number): Promise<number> {
 
   let result: number;
 
+  //Base case #1
   if (n == 0) {
     result = 0
+  //Base case #2
   } else if ( n == 1) {
     result = 1
+  //Recursive Call
   } else {
     const [r1, r2] = await Promise.all([concurrentMemoFibonacci(n - 1), concurrentMemoFibonacci(n - 2)]);
     result = r1 + r2
