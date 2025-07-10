@@ -5,6 +5,7 @@ the root of this project lives one level down in [01-concurrent-fibonacci](01-co
 cd 01-concurrent-fibonacci
 ```
 
+Follow the instructions provided in the [01-concurrent-fibonacci](01-concurrent-fibonacci/README.md)
 
 ## Project 2 - Multi-Step Wizard Application
 the root of this project lives one level down in [02-wizard-application](02-wizard-application)
