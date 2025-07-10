@@ -111,6 +111,8 @@ const getPreviousStep = (currentStep: WizardStep, formData: WizardData): WizardS
       return 'ac-units';
     case 'heating-type':
       return 'system-type';
+    case 'contact-info':
+      return 'heating-type';
     case 'contact-only':
       // Dynamic previous step based on where they came from
       if (formData.units === 'more-than-3' || formData.units === 'dont-know') {

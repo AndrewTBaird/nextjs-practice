@@ -27,7 +27,7 @@ export const ContactStep: React.FC = () => {
     if (formDataStr !== localStr) {
       setContactInfo(formData.contactInfo);
     }
-  }, [formData.contactInfo]);
+  }, [formData.contactInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update form data when local state changes (debounced to avoid excessive updates)
   useEffect(() => {

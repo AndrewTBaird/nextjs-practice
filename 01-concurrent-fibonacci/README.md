@@ -16,12 +16,12 @@ await Promise.all([
 
 The call above should compute `fibonacci(35)` only once.
 
-## How to test
+## How to setup and run
 
-Run the following from the repository root:
 
 ```bash
-npm test 01-concurrent-fibonacci
+npm install #install dependencies
+npm test 01-concurrent-fibonacci #run the tests
 ```
 
 The tests are in `tests/index.test.ts` and should pass when your implementation is complete.

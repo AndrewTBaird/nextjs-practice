@@ -5,60 +5,33 @@ import { useWizard } from '@/contexts/WizardContext';
 import { Progress } from '@/components/ui/progress';
 
 export const StepIndicator: React.FC = () => {
-  const { currentStep, formData } = useWizard();
+  const { currentStep } = useWizard();
   const [displayProgress, setDisplayProgress] = useState(0);
 
-  // Calculate the logical progress based on form completion
+  // Get current step number for display
+  const getCurrentStepNumber = () => {
+    if (currentStep === 'address') return 1;
+    if (currentStep === 'ac-units') return 2;
+    if (currentStep === 'system-type') return 3;
+    if (currentStep === 'heating-type') return 4;
+    if (currentStep === 'contact-info' || currentStep === 'contact-only') return 5;
+    if (currentStep === 'confirmation') return 5;
+    return 1;
+  };
+
+  // Calculate progress based on current step position
   const calculateProgress = useCallback(() => {
-    let progress = 0;
+    let stepNumber = 1;
+    if (currentStep === 'address') stepNumber = 1;
+    else if (currentStep === 'ac-units') stepNumber = 2;
+    else if (currentStep === 'system-type') stepNumber = 3;
+    else if (currentStep === 'heating-type') stepNumber = 4;
+    else if (currentStep === 'contact-info' || currentStep === 'contact-only') stepNumber = 5;
+    else if (currentStep === 'confirmation') stepNumber = 5;
     
-    // Address step (20%)
-    if (formData.address.street && formData.address.city && formData.address.state && formData.address.zipCode) {
-      progress += 20;
-    }
-    
-    // AC Units step (20%)
-    if (formData.units) {
-      progress += 20;
-      
-      // If going to consultation flow, jump to 80% (skip system and heating)
-      if (formData.units === 'more-than-3' || formData.units === 'dont-know') {
-        progress = 80;
-      }
-    }
-    
-    // System Type step (20%) - only if in main flow
-    if (formData.systemType && formData.units !== 'more-than-3' && formData.units !== 'dont-know') {
-      progress += 20;
-      
-      // If going to consultation flow from system step
-      if (formData.systemType === 'dont-know') {
-        progress = 80;
-      }
-    }
-    
-    // Heating Type step (20%) - only if in main flow
-    if (formData.heatingType && formData.systemType !== 'dont-know' && formData.units !== 'more-than-3' && formData.units !== 'dont-know') {
-      progress += 20;
-      
-      // If going to consultation flow from heating step
-      if (formData.heatingType === 'dont-know') {
-        progress = 80;
-      }
-    }
-    
-    // Contact step (20%) - final step before confirmation
-    if (formData.contactInfo.name && formData.contactInfo.phone && formData.contactInfo.email) {
-      progress = 100;
-    }
-    
-    // Confirmation step
-    if (currentStep === 'confirmation') {
-      progress = 100;
-    }
-    
-    return Math.min(progress, 100);
-  }, [currentStep, formData]);
+    const totalSteps = 5;
+    return (stepNumber / totalSteps) * 100;
+  }, [currentStep]);
 
   // Update progress smoothly when step changes
   useEffect(() => {
@@ -78,17 +51,6 @@ export const StepIndicator: React.FC = () => {
       case 'confirmation': return 'Complete';
       default: return 'Progress';
     }
-  };
-
-  // Get current step number for display
-  const getCurrentStepNumber = () => {
-    if (currentStep === 'confirmation') return 5;
-    if (currentStep === 'contact-only' || currentStep === 'contact-info') return 4;
-    if (currentStep === 'heating-type') return 4;
-    if (currentStep === 'system-type') return 3;
-    if (currentStep === 'ac-units') return 2;
-    if (currentStep === 'address') return 1;
-    return 1;
   };
 
   return (
