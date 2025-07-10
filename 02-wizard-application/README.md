@@ -1,6 +1,8 @@
 # Exercise 02 - Multi-Step Wizard Application
 
 ## Running the project
+Install dependencies
+
 Run the backend in one terminal. This will run on port 3000
 ```bash
 (cd backend && npm install && npm run build && npm start)

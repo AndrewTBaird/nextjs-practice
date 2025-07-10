@@ -26,7 +26,7 @@ export const ConfirmationStep: React.FC = () => {
     if (!isSubmitted) {
       handleSubmit();
     }
-  }, [isSubmitted]);
+  }, [isSubmitted, submitWizard]);
 
 
   const getSystemSummary = () => {
@@ -64,7 +64,7 @@ export const ConfirmationStep: React.FC = () => {
           </div>
           <CardTitle className="text-2xl">Quote Request Submitted!</CardTitle>
           <CardDescription>
-            Thank you for choosing Mint Home for your HVAC needs. We've received your information and will contact you soon.
+            Thank you for choosing Mint Home for your HVAC needs. We have received your information and will contact you soon.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">

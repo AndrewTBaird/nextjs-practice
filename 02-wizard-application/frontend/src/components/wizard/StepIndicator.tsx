@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useWizard } from '@/contexts/WizardContext';
 import { Progress } from '@/components/ui/progress';
 
@@ -8,20 +8,9 @@ export const StepIndicator: React.FC = () => {
   const { currentStep, formData } = useWizard();
   const [displayProgress, setDisplayProgress] = useState(0);
 
-  // Define main flow steps (excluding alternative flows)
-  const mainSteps = [
-    'address',
-    'ac-units', 
-    'system-type',
-    'heating-type',
-    'contact-info',
-    'confirmation'
-  ];
-
   // Calculate the logical progress based on form completion
-  const calculateProgress = () => {
+  const calculateProgress = useCallback(() => {
     let progress = 0;
-    const maxSteps = 5; // Total steps before confirmation
     
     // Address step (20%)
     if (formData.address.street && formData.address.city && formData.address.state && formData.address.zipCode) {
@@ -69,13 +58,13 @@ export const StepIndicator: React.FC = () => {
     }
     
     return Math.min(progress, 100);
-  };
+  }, [currentStep, formData]);
 
   // Update progress smoothly when step changes
   useEffect(() => {
     const targetProgress = calculateProgress();
     setDisplayProgress(targetProgress);
-  }, [currentStep, formData]);
+  }, [calculateProgress]);
 
   // Get current step display name
   const getStepDisplayName = (step: string) => {

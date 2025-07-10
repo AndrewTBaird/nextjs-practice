@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { WizardContextType, WizardState, WizardStep, WizardData } from '@/types/wizard';
 
@@ -173,9 +173,9 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return 'wizard_' + Date.now() + '_' + Math.random().toString(36).slice(2, 11);
   };
 
-  const updateFormData = (step: keyof WizardData, data: unknown) => {
+  const updateFormData = useCallback((step: keyof WizardData, data: unknown) => {
     dispatch({ type: 'UPDATE_FORM_DATA', payload: { step, data } });
-  };
+  }, []);
 
   const goToStep = (step: WizardStep) => {
     dispatch({ type: 'SET_CURRENT_STEP', payload: step });
@@ -256,7 +256,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   };
 
 
-  const submitWizard = async (): Promise<void> => {
+  const submitWizard = useCallback(async (): Promise<void> => {
     dispatch({ type: 'SET_LOADING', payload: true });
     try {
       const response = await fetch('http://localhost:3000/api/wizard/submit', {
@@ -285,7 +285,7 @@ export const WizardProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
-  };
+  }, [state.sessionId, state.formData]);
 
   const contextValue: WizardContextType = {
     sessionId: state.sessionId,

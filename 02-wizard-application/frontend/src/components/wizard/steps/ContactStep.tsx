@@ -36,7 +36,7 @@ export const ContactStep: React.FC = () => {
     }, 100);
     
     return () => clearTimeout(timeoutId);
-  }, [contactInfo]);
+  }, [contactInfo, updateFormData]);
 
   const validateField = (field: keyof ContactData, value: string) => {
     const newErrors = { ...errors };
