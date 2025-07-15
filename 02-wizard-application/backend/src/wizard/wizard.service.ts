@@ -3,15 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WizardStep, WizardData, NextStepRequestDto, NextStepResponseDto, SubmitWizardRequestDto, SubmitWizardResponseDto } from './dto/wizard.dto';
 import { WizardSession } from './entities/wizard-session.entity';
-import { QuoteRequest } from './entities/quote-request.entity';
+import { QuoteRequestService } from '../quote-request/quote-request.service';
 
 @Injectable()
 export class WizardService {
   constructor(
     @InjectRepository(WizardSession)
     private wizardSessionRepository: Repository<WizardSession>,
-    @InjectRepository(QuoteRequest)
-    private quoteRequestRepository: Repository<QuoteRequest>,
+    private readonly quoteRequestService: QuoteRequestService,
   ) {}
 
   async determineNextStep(request: NextStepRequestDto): Promise<NextStepResponseDto> {
@@ -60,33 +59,18 @@ export class WizardService {
   async submitWizard(request: SubmitWizardRequestDto): Promise<SubmitWizardResponseDto> {
     const { sessionId, formData } = request;
     
-    // Generate a quote request ID
-    const quoteRequestId = `quote_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
-    
-    // Save quote request to database
-    const quoteRequest = this.quoteRequestRepository.create({
-      quoteRequestId,
+    // Create quote request using the service
+    const quoteResponse = await this.quoteRequestService.create({
       sessionId,
-      street: formData.address.street,
-      city: formData.address.city,
-      state: formData.address.state,
-      zipCode: formData.address.zipCode,
-      units: formData.units,
-      systemType: formData.systemType,
-      heatingType: formData.heatingType,
-      name: formData.contactInfo.name,
-      phone: formData.contactInfo.phone,
-      email: formData.contactInfo.email,
+      formData
     });
-    
-    await this.quoteRequestRepository.save(quoteRequest);
     
     // Clear session after submission
     await this.wizardSessionRepository.delete({ sessionId });
     
     return {
-      success: true,
-      quoteRequestId
+      success: quoteResponse.success,
+      quoteRequestId: quoteResponse.quoteRequestId
     };
   }
 

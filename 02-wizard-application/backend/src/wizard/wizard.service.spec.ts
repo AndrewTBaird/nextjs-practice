@@ -3,13 +3,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { WizardService } from './wizard.service';
 import { WizardSession } from './entities/wizard-session.entity';
-import { QuoteRequest } from './entities/quote-request.entity';
+import { QuoteRequestService } from '../quote-request/quote-request.service';
 import { NextStepRequestDto, SubmitWizardRequestDto } from './dto/wizard.dto';
 
 describe('WizardService', () => {
   let service: WizardService;
   let wizardSessionRepository: Repository<WizardSession>;
-  let quoteRequestRepository: Repository<QuoteRequest>;
+  let quoteRequestService: QuoteRequestService;
 
   const mockWizardSessionRepository = {
     findOne: jest.fn(),
@@ -18,9 +18,8 @@ describe('WizardService', () => {
     delete: jest.fn(),
   };
 
-  const mockQuoteRequestRepository = {
+  const mockQuoteRequestService = {
     create: jest.fn(),
-    save: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -32,15 +31,15 @@ describe('WizardService', () => {
           useValue: mockWizardSessionRepository,
         },
         {
-          provide: getRepositoryToken(QuoteRequest),
-          useValue: mockQuoteRequestRepository,
+          provide: QuoteRequestService,
+          useValue: mockQuoteRequestService,
         },
       ],
     }).compile();
 
     service = module.get<WizardService>(WizardService);
     wizardSessionRepository = module.get<Repository<WizardSession>>(getRepositoryToken(WizardSession));
-    quoteRequestRepository = module.get<Repository<QuoteRequest>>(getRepositoryToken(QuoteRequest));
+    quoteRequestService = module.get<QuoteRequestService>(QuoteRequestService);
   });
 
   afterEach(() => {
@@ -173,42 +172,22 @@ describe('WizardService', () => {
         }
       };
 
-      const mockQuoteRequest = {
-        quoteRequestId: 'quote_123',
-        sessionId: 'test-session',
-        street: '123 Main St',
-        city: 'Austin',
-        state: 'TX',
-        zipCode: '78701',
-        units: 'one',
-        systemType: 'split',
-        heatingType: 'heat-pump',
-        name: 'John Doe',
-        phone: '555-1234',
-        email: 'john@example.com',
+      const mockQuoteResponse = {
+        success: true,
+        quoteRequestId: 'quote_123_abc',
+        message: 'Quote request submitted successfully. Our team will contact you soon.'
       };
 
-      mockQuoteRequestRepository.create.mockReturnValue(mockQuoteRequest);
+      mockQuoteRequestService.create.mockResolvedValue(mockQuoteResponse);
 
       const result = await service.submitWizard(requestDto);
 
       expect(result.success).toBe(true);
-      expect(result.quoteRequestId).toMatch(/^quote_\d+_[a-z0-9]+$/);
-      expect(mockQuoteRequestRepository.create).toHaveBeenCalledWith({
-        quoteRequestId: expect.stringMatching(/^quote_\d+_[a-z0-9]+$/),
+      expect(result.quoteRequestId).toBe('quote_123_abc');
+      expect(mockQuoteRequestService.create).toHaveBeenCalledWith({
         sessionId: 'test-session',
-        street: '123 Main St',
-        city: 'Austin',
-        state: 'TX',
-        zipCode: '78701',
-        units: 'one',
-        systemType: 'split',
-        heatingType: 'heat-pump',
-        name: 'John Doe',
-        phone: '555-1234',
-        email: 'john@example.com',
+        formData: requestDto.formData
       });
-      expect(mockQuoteRequestRepository.save).toHaveBeenCalledWith(mockQuoteRequest);
       expect(mockWizardSessionRepository.delete).toHaveBeenCalledWith({ sessionId: 'test-session' });
     });
   });
