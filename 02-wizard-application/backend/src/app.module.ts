@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { WizardModule } from './wizard/wizard.module';
 import { QuoteRequestModule } from './quote-request/quote-request.module';
 import { WizardSession } from './wizard/entities/wizard-session.entity';
@@ -18,7 +16,7 @@ import { QuoteRequest } from './wizard/entities/quote-request.entity';
     WizardModule,
     QuoteRequestModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
