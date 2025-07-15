@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WizardModule } from './wizard/wizard.module';
-import { QuoteRequestController } from './quote-request/quote-request.controller';
+import { QuoteRequestModule } from './quote-request/quote-request.module';
 import { WizardSession } from './wizard/entities/wizard-session.entity';
 import { QuoteRequest } from './wizard/entities/quote-request.entity';
 
@@ -15,10 +15,10 @@ import { QuoteRequest } from './wizard/entities/quote-request.entity';
       entities: [WizardSession, QuoteRequest],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([QuoteRequest]),
-    WizardModule
+    WizardModule,
+    QuoteRequestModule
   ],
-  controllers: [AppController, QuoteRequestController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
