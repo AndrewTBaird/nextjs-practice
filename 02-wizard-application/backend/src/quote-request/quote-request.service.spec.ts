@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QuoteRequestService } from './quote-request.service';
-import { QuoteRequest } from '../wizard/entities/quote-request.entity';
+import { QuoteRequest } from './entities/quote-request.entity';
 import { CreateQuoteRequestDto } from './quote-request.controller';
 
 describe('QuoteRequestService', () => {
