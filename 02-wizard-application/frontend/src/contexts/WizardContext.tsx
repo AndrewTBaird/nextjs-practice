@@ -75,34 +75,6 @@ const STEP_ORDER: WizardStep[] = [
   'confirmation'
 ];
 
-// const getNextStep = (currentStep: WizardStep, formData: WizardData): WizardStep => {
-//   switch (currentStep) {
-//     case 'address':
-//       return 'ac-units';
-//     case 'ac-units':
-//       if (formData.units === 'more-than-3' || formData.units === 'dont-know') {
-//         return 'contact-only';
-//       }
-//       return 'system-type';
-//     case 'system-type':
-//       if (formData.systemType === 'dont-know') {
-//         return 'contact-only';
-//       }
-//       return 'heating-type';
-//     case 'heating-type':
-//       if (formData.heatingType === 'dont-know') {
-//         return 'contact-only';
-//       }
-//       return 'contact-info';
-//     case 'contact-info':
-//       return 'confirmation';
-//     case 'contact-only':
-//       return 'confirmation';
-//     default:
-//       return 'address';
-//   }
-// };
-
 const getPreviousStep = (currentStep: WizardStep, formData: WizardData): WizardStep => {
   switch (currentStep) {
     case 'ac-units':
